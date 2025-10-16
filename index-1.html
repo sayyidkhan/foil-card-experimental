@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pokémon Holographic Card Effect</title>
+<style>
+  body {
+    background: radial-gradient(circle at center, #101010, #050505);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    overflow: hidden;
+    font-family: system-ui, sans-serif;
+  }
+
+  .card {
+    position: relative;
+    width: 320px;
+    height: 450px;
+    border-radius: 20px;
+    overflow: hidden;
+    background: url('https://cassette.sphdigital.com.sg/image/straitstimes/f229110090e942b7e677fc7a7725a296074b832e51e7c9c15f620095298df584') center/cover no-repeat;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    transition: transform 0.15s ease-out;
+    box-shadow:
+      0 0 40px rgba(0, 255, 255, 0.2),
+      0 0 60px rgba(255, 0, 255, 0.2),
+      0 10px 30px rgba(0,0,0,0.7);
+  }
+
+  /* 🌈 Moving rainbow foil gradient */
+  .card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      130deg,
+      rgba(255,0,200,0.35),
+      rgba(0,255,255,0.35),
+      rgba(255,255,0,0.35),
+      rgba(255,0,255,0.35),
+      rgba(0,255,0,0.35)
+    );
+    background-size: 300% 300%;
+    mix-blend-mode: color-dodge;
+    animation: holoShift 6s linear infinite;
+    pointer-events: none;
+  }
+
+  @keyframes holoShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* ✨ Glitter layer for foil texture */
+  .card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.6) 1px, transparent 1px);
+    background-size: 4px 4px;
+    opacity: 0.15;
+    mix-blend-mode: overlay;
+    animation: sparkle 3s linear infinite;
+    pointer-events: none;
+  }
+
+  @keyframes sparkle {
+    0%, 100% { transform: translate(0, 0); }
+    50% { transform: translate(-5%, -5%); }
+  }
+
+  /* 💡 Border glow */
+  .glow {
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    box-shadow:
+      0 0 10px rgba(255,255,255,0.5),
+      0 0 20px rgba(255,0,255,0.3),
+      0 0 30px rgba(0,255,255,0.3);
+    pointer-events: none;
+    mix-blend-mode: screen;
+    opacity: 0.6;
+  }
+</style>
+</head>
+<body>
+
+<div class="card" id="card">
+  <div class="glow"></div>
+</div>
+
+<script>
+// 🎮 Interactive tilt effect
+const card = document.getElementById('card');
+document.addEventListener('mousemove', e => {
+  const x = (window.innerWidth / 2 - e.pageX) / 25;
+  const y = (window.innerHeight / 2 - e.pageY) / 25;
+  card.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+});
+</script>
+
+</body>
+</html>
